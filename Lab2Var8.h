@@ -48,6 +48,14 @@ public:
         return 0;
     }
 
+    complex& operator+(const complex other)
+    {
+        complex* temp = new complex();
+        temp->GetRe() = this->Re + other.Re;
+        temp->GetIm() = this->Im + other.Im;
+        return *temp;
+    }
+
     friend ostream& operator<<(ostream& out, const complex c);
 
     friend istream& operator>>(istream& in, complex& c);
@@ -111,6 +119,14 @@ public:
         complex* temp = new complex();
         temp->Re = Re * other.Re - Im * other.Im;
         temp->Im = Re * other.Im + Im * other.Re;
+        return *temp;
+    }
+
+    complex& operator-(const complex other)
+    {
+        complex* temp = new complex();
+        temp->Re = Re - other.Re;
+        temp->Im = Im - other.Im;
         return *temp;
     }
 
@@ -213,7 +229,7 @@ string sqrt(complex num)
     phi = atan2(y, x);
     z = sqrt(x * x + y * y);
     complex(sqrt(z) * cos((phi + 2 * PI) / 2), sqrt(z) * sin((phi + 2 * PI) / 2));
-    cout<<"Ïåðâàÿ: " << complex(sqrt(z) * cos((phi + 2 * PI) / 2), sqrt(z) * sin((phi + 2 * PI) / 2)) << "  Âòîðàÿ: " << complex(sqrt(z) * cos(phi / 2), sqrt(z) * sin(phi / 2));
+    cout<<"ÐŸÐµÑ€Ð²Ð°Ñ: " << complex(sqrt(z) * cos((phi + 2 * PI) / 2), sqrt(z) * sin((phi + 2 * PI) / 2)) << "  Ð’Ñ‚Ð¾Ñ€Ð°Ñ: " << complex(sqrt(z) * cos(phi / 2), sqrt(z) * sin(phi / 2));
     return " ";
 }
 complex pow(complex num, int pow)
@@ -1013,10 +1029,7 @@ public:
 
     void Append(T item) override
     {
-        if (items->GetSize() != 0) {
-            items->Append(item);
-        }
-        else throw "IndexOutOfRange_DS_APPEND";
+        items->Append(item);
     }
 
     void InsertAt(T item, int index) override
@@ -1171,10 +1184,10 @@ public:
 
     void PrintParams()
     {
-        cout << "Êîëè÷åñòâî ñòîëáöîâ: " << this->GetNumOfColumns() << endl;
-        cout << "Êîëè÷åñòâî ñòðîê: " << this->GetNumOfRows() << endl;
-        cout << "Òèï ïîñëåäîâàòåëüíîñòè: " << this->GetTypeOfArray() << endl;
-        cout << "Òèï äàííûõ: " << this->GetTypeOfData() << endl;
+        cout << "ÐšÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ ÑÑ‚Ð¾Ð»Ð±Ñ†Ð¾Ð²: " << this->GetNumOfColumns() << endl;
+        cout << "ÐšÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ ÑÑ‚Ñ€Ð¾Ðº: " << this->GetNumOfRows() << endl;
+        cout << "Ð¢Ð¸Ð¿ Ð¿Ð¾ÑÐ»ÐµÐ´Ð¾Ð²Ð°Ñ‚ÐµÐ»ÑŒÐ½Ð¾ÑÑ‚Ð¸: " << this->GetTypeOfArray() << endl;
+        cout << "Ð¢Ð¸Ð¿ Ð´Ð°Ð½Ð½Ñ‹Ñ…: " << this->GetTypeOfData() << endl;
     }
 
     void FindNorm1(int width)
@@ -1183,7 +1196,7 @@ public:
         {
             T1 norm = T1();
             for (int i = 0; i < this->GetNumOfRows(); i++) for (int j = 0; j < this->GetNumOfColumns(); j++) norm += (T1)pow(this->Get(i, j), 2);
-            cout << " Íîðìà " << setw(width) << sqrt(norm) << endl;
+            cout << " ÐÐ¾Ñ€Ð¼Ð° " << setw(width) << sqrt(norm) << endl;
             
         }
         catch (string ex)
@@ -1196,12 +1209,6 @@ public:
     {
         try
         {
-            //for (int i = 0; i < ((Matrix<ListSequence<int>, int>*)mat1)->GetNumOfRows(); i++)
-                //                        {
-                //                            norm = 0;
-                //                            for (int j = 0; j < ((Matrix<ListSequence<int>, int>*)mat1)->GetNumOfColumns(); j++) norm += abs((int)((Matrix<ListSequence<int>, int>*)mat1)->Get(i, j));
-                //                            if (norm1 < norm) norm1 = norm;
-                //                        }
             if (typeid(T1).name() != typeid(complex).name())
             {
                 T1 norm = T1();
@@ -1212,7 +1219,7 @@ public:
                     for (int j = 0; j < this->GetNumOfRows(); j++) norm += abs(this->Get(j, i));
                     if (norm1 < norm) norm1 = norm;
                 }
-                cout << "Íîðìà: " << setw(width) << norm1 << endl;
+                cout << "ÐÐ¾Ñ€Ð¼Ð°: " << setw(width) << norm1 << endl;
             }
             else
             {
@@ -1224,7 +1231,7 @@ public:
                     for (int j = 0; j < this->GetNumOfRows(); j++) norm += abs(this->Get(j, i));
                     if (norm1 < norm) norm1 = norm;
                 }
-                cout << "Íîðìà: " << setw(width) << norm1 << endl;
+                cout << "ÐÐ¾Ñ€Ð¼Ð°: " << setw(width) << norm1 << endl;
             }
         }
         catch (string ex)
@@ -1247,7 +1254,7 @@ public:
                     for (int j = 0; j < this->GetNumOfColumns(); j++) norm += abs(this->Get(i, j));
                     if (norm1 < norm) norm1 = norm;
                 }
-                cout << "Íîðìà: " << setw(width) << norm1 << endl;
+                cout << "ÐÐ¾Ñ€Ð¼Ð°: " << setw(width) << norm1 << endl;
             }
             else
             {
@@ -1259,7 +1266,7 @@ public:
                     for (int j = 0; j < this->GetNumOfColumns(); j++) norm += abs(this->Get(i, j));
                     if (norm1 < norm) norm1 = norm;
                 }
-                cout << "Íîðìà: " << setw(width) << norm1 << endl;
+                cout << "ÐÐ¾Ñ€Ð¼Ð°: " << setw(width) << norm1 << endl;
             }
         }
         catch (string ex)
@@ -1364,7 +1371,7 @@ string gettypeofdata()
     string typeofdata = "";
     while (typeofdata == "")
     {
-        cout << "Âûáåðèòå òèï äàííûõ:\n1 - int\n2 - long int\n3 - float\n4 - double\n5 - complex\n";
+        cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ñ‚Ð¸Ð¿ Ð´Ð°Ð½Ð½Ñ‹Ñ…:\n1 - int\n2 - long int\n3 - float\n4 - double\n5 - complex\n";
         int a = 0;
         cin >> a;
         switch (a)
@@ -1385,7 +1392,7 @@ string gettypeofdata()
             typeofdata = "complex";
             break;
         default:
-            cout << " Íåâåðíûé ââîä\n";
+            cout << " ÐÐµÐ²ÐµÑ€Ð½Ñ‹Ð¹ Ð²Ð²Ð¾Ð´\n";
             typeofdata = "";
             break;
         }
@@ -1399,7 +1406,7 @@ string gettypeofarray()
     string typeofarray = "";
     while (typeofarray == "")
     {
-        cout << "Âûáåðèòå òèï äàííûõ:\n1 - LinkedArr\n2 - DynamicArr\n";
+        cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ñ‚Ð¸Ð¿ Ð´Ð°Ð½Ð½Ñ‹Ñ…:\n1 - LinkedArr\n2 - DynamicArr\n";
         int a = 0;
         cin >> a;
         switch (a)
@@ -1412,7 +1419,7 @@ string gettypeofarray()
             break;
 
         default:
-            cout << "Íåâåðíûé ââîä\n";
+            cout << "ÐÐµÐ²ÐµÑ€Ð½Ñ‹Ð¹ Ð²Ð²Ð¾Ð´\n";
             typeofarray = "";
             break;
         }
@@ -1425,9 +1432,9 @@ int getnumofcollumns()
 {
     int Columns = -1;
     while (Columns < 1) {
-        cout << "Ââåäèòå êîëè÷åñòâî ñòîëáöîâ äëÿ ìàòðèöû: ";
+        cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ ÑÑ‚Ð¾Ð»Ð±Ñ†Ð¾Ð² Ð´Ð»Ñ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñ‹: ";
         cin >> Columns;
-        if (Columns < 1) cout << "\nÍåâåðíûé ââîä\n";
+        if (Columns < 1) cout << "\nÐÐµÐ²ÐµÑ€Ð½Ñ‹Ð¹ Ð²Ð²Ð¾Ð´\n";
 
     }
     return Columns;
@@ -1437,9 +1444,9 @@ int getnumofrows()
 {
     int Rows = -1;
     while (Rows < 1) {
-        cout << "Ââåäèòå êîëè÷åñòâî ñòðîê äëÿ ìàòðèöû: ";
+        cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ ÑÑ‚Ñ€Ð¾Ðº Ð´Ð»Ñ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñ‹: ";
         cin >> Rows;
-        if (Rows < 1) cout << "\nÍåâåðíûé ââîä\n";
+        if (Rows < 1) cout << "\nÐÐµÐ²ÐµÑ€Ð½Ñ‹Ð¹ Ð²Ð²Ð¾Ð´\n";
 
     }
     return Rows;
@@ -1496,7 +1503,7 @@ void* GetMatrix()
         }
     }
     else {
-        cout << "Íåâåðíûé ââîä GetMatrix\n";
+        cout << "ÐÐµÐ²ÐµÑ€Ð½Ñ‹Ð¹ Ð²Ð²Ð¾Ð´ GetMatrix\n";
     }
     return mat1;
 }
@@ -1550,7 +1557,7 @@ void* GetMatrix(string typeofdata, string typeofarray, int rows, int columns)
         }
     }
     else {
-        cout << "Íåâåðíûé ââîä GetMatrix\n";
+        cout << "ÐÐµÐ²ÐµÑ€Ð½Ñ‹Ð¹ Ð²Ð²Ð¾Ð´ GetMatrix\n";
     }
     return mat1;
 }
@@ -1658,7 +1665,7 @@ void ByHandMatrix(void* mat)
     string typeofarray = ((Matrix<ListSequence<int>, int>*)mat)->GetTypeOfArray();
     int Columns = ((Matrix<ListSequence<int>, int>*)mat)->GetNumOfColumns();
     int Rows = ((Matrix<ListSequence<int>, int>*)mat)->GetNumOfRows();
-    cout << "Ââåäèòå " << Rows << " ñòðîê è " << Columns << " ñòîáöîâ ýëåìåíòîâ òèïà " + typeofdata << endl;
+    cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ " << Rows << " ÑÑ‚Ñ€Ð¾Ðº Ð¸ " << Columns << " ÑÑ‚Ð¾Ð±Ñ†Ð¾Ð² ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ñ‚Ð¸Ð¿Ð° " + typeofdata << endl;
     try
     {
         if (typeofarray == "LinkedArr") {
@@ -1901,7 +1908,7 @@ void MatrixToConsole(void* mat)
 
 void MatrixSum(void* mat1)
 {
-    cout << "Âûáåðèòå ñïîñîá ââîäà ìàòðèöû äëÿ ñóììèðîâàíèÿ:\n1. Ðó÷íîé.\n2. Ñëó÷àéíûé.\n";
+    cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ ÑÐ¿Ð¾ÑÐ¾Ð± Ð²Ð²Ð¾Ð´Ð° Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñ‹ Ð´Ð»Ñ ÑÑƒÐ¼Ð¼Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ñ:\n1. Ð ÑƒÑ‡Ð½Ð¾Ð¹.\n2. Ð¡Ð»ÑƒÑ‡Ð°Ð¹Ð½Ñ‹Ð¹.\n";
     int choice1 = 0;
     void* mat2 = GetMatrix(((Matrix<ListSequence<int>, int>*)mat1)->GetTypeOfData(), ((Matrix<ListSequence<int>, int>*)mat1)->GetTypeOfArray(), ((Matrix<ListSequence<int>, int>*)mat1)->GetNumOfRows(), ((Matrix<ListSequence<int>, int>*)mat1)->GetNumOfColumns());
     try
@@ -1919,14 +1926,14 @@ void MatrixSum(void* mat1)
             }
             else
             {
-                cout << "Íåâðíûé ââîä.\n";
+                cout << "ÐÐµÐ²Ñ€Ð½Ñ‹Ð¹ Ð²Ð²Ð¾Ð´.\n";
                 cin.clear();
                 while (cin.get() != '\n');
             }
 
             if (choice1 == 1 || choice1 == 2)
             {
-                cout << "Ìàòðèöà äëÿ ñóììèðîâàíèÿ:\n";
+                cout << "ÐœÐ°Ñ‚Ñ€Ð¸Ñ†Ð° Ð´Ð»Ñ ÑÑƒÐ¼Ð¼Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ñ:\n";
                 MatrixToConsole(mat2);
                 if (((Matrix<ListSequence<int>, int>*)mat1)->GetTypeOfArray() == "LinkedArr")
                 {
@@ -1956,7 +1963,7 @@ void MatrixSum(void* mat1)
 
 void MatrixMult(void* mat1)
 {
-    cout << "Âûáåðèòå ñïîñîá ââîäà ÷èñëà äëÿ óìíîæåíèÿ:\n1. Ðó÷íîé.\n2. Ñëó÷àéíûé.\n";
+    cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ ÑÐ¿Ð¾ÑÐ¾Ð± Ð²Ð²Ð¾Ð´Ð° Ñ‡Ð¸ÑÐ»Ð° Ð´Ð»Ñ ÑƒÐ¼Ð½Ð¾Ð¶ÐµÐ½Ð¸Ñ:\n1. Ð ÑƒÑ‡Ð½Ð¾Ð¹.\n2. Ð¡Ð»ÑƒÑ‡Ð°Ð¹Ð½Ñ‹Ð¹.\n";
     int choice1 = 0;
     void* num = nullptr;
     string typeofdata = ((Matrix<ListSequence<int>, int>*)mat1)->GetTypeOfData();
@@ -1970,35 +1977,35 @@ void MatrixMult(void* mat1)
                 if (typeofdata == "int")
                 {
                     int num1;
-                    cout << "Ââåäèòå ÷èñëî òèïà " << typeofdata << endl;
+                    cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ‡Ð¸ÑÐ»Ð¾ Ñ‚Ð¸Ð¿Ð° " << typeofdata << endl;
                     cin >> num1;
                     num = &num1;
                 }
                 else if (typeofdata == "long int")
                 {
                     long num1;
-                    cout << "Ââåäèòå ÷èñëî òèïà " << typeofdata << endl;
+                    cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ‡Ð¸ÑÐ»Ð¾ Ñ‚Ð¸Ð¿Ð° " << typeofdata << endl;
                     cin >> num1;
                     num = &num1;
                 }
                 else if (typeofdata == "float")
                 {
                     float num1;
-                    cout << "Ââåäèòå ÷èñëî òèïà " << typeofdata << endl;
+                    cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ‡Ð¸ÑÐ»Ð¾ Ñ‚Ð¸Ð¿Ð° " << typeofdata << endl;
                     cin >> num1;
                     num = &num1;
                 }
                 else if (typeofdata == "double")
                 {
                     double num1;
-                    cout << "Ââåäèòå ÷èñëî òèïà " << typeofdata << endl;
+                    cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ‡Ð¸ÑÐ»Ð¾ Ñ‚Ð¸Ð¿Ð° " << typeofdata << endl;
                     cin >> num1;
                     num = &num1;
                 }
                 else if (typeofdata == "complex")
                 {
                     double Re, Im;
-                    cout << "Ââåäèòå ÷èñëî òèïà " << typeofdata << endl << "Re: ";
+                    cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ‡Ð¸ÑÐ»Ð¾ Ñ‚Ð¸Ð¿Ð° " << typeofdata << endl << "Re: ";
                     cin >> Re;
                     cout << "Im: ";
                     cin >> Im;
@@ -2010,38 +2017,38 @@ void MatrixMult(void* mat1)
                 if (typeofdata == "int")
                 {
                     int num1 = (int)(pow(-1, rand() % 2) * (rand() % 1000));
-                    cout << "Ñãåíåðèðîâàííîå ÷èñëî: " << num1 << endl;
+                    cout << "Ð¡Ð³ÐµÐ½ÐµÑ€Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð½Ð¾Ðµ Ñ‡Ð¸ÑÐ»Ð¾: " << num1 << endl;
                     num = &num1;
                 }
                 else if (typeofdata == "long int")
                 {
                     long num1 = (long)(pow(-1, rand() % 2) * (rand() % 1000));
-                    cout << "Ñãåíåðèðîâàííîå ÷èñëî: " << num1 << endl;
+                    cout << "Ð¡Ð³ÐµÐ½ÐµÑ€Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð½Ð¾Ðµ Ñ‡Ð¸ÑÐ»Ð¾: " << num1 << endl;
                     num = &num1;
                 }
                 else if (typeofdata == "float")
                 {
                     float num1 = floatrand(-1000, 1000);
-                    cout << "Ñãåíåðèðîâàííîå ÷èñëî: " << num1 << endl;
+                    cout << "Ð¡Ð³ÐµÐ½ÐµÑ€Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð½Ð¾Ðµ Ñ‡Ð¸ÑÐ»Ð¾: " << num1 << endl;
                     num = &num1;
                 }
                 else if (typeofdata == "double")
                 {
                     double num1 = doublerand(-1000, 1000);
-                    cout << "Ñãåíåðèðîâàííîå ÷èñëî: " << num1 << endl;
+                    cout << "Ð¡Ð³ÐµÐ½ÐµÑ€Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð½Ð¾Ðµ Ñ‡Ð¸ÑÐ»Ð¾: " << num1 << endl;
                     num = &num1;
                 }
                 else if (typeofdata == "complex")
                 {
                     double Re = doublerand(-1000, 1000), Im = doublerand(-1000, 1000);
                     complex num1(Re, Im);
-                    cout << "Ñãåíåðèðîâàííîå ÷èñëî: " << num1 << endl;
+                    cout << "Ð¡Ð³ÐµÐ½ÐµÑ€Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð½Ð¾Ðµ Ñ‡Ð¸ÑÐ»Ð¾: " << num1 << endl;
                     num = new complex(Re, Im);
                 }
             }
             else
             {
-                cout << "Íåâðíûé ââîä.\n";
+                cout << "ÐÐµÐ²Ñ€Ð½Ñ‹Ð¹ Ð²Ð²Ð¾Ð´.\n";
                 cin.clear();
                 while (cin.get() != '\n');
             }
@@ -2084,11 +2091,50 @@ void MatrixMult(void* mat1)
     }
 }
 
+//template<typename T, typename T1>
+//void MatrixMult(Matrix<T, T1>* mat)
+//{
+//    cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ ÑÐ¿Ð¾ÑÐ¾Ð± Ð²Ð²Ð¾Ð´Ð° Ñ‡Ð¸ÑÐ»Ð° Ð´Ð»Ñ ÑƒÐ¼Ð½Ð¾Ð¶ÐµÐ½Ð¸Ñ:\n1. Ð ÑƒÑ‡Ð½Ð¾Ð¹.\n2. Ð¡Ð»ÑƒÑ‡Ð°Ð¹Ð½Ñ‹Ð¹.\n";
+//    int choice1 = 0;
+//    T1 num = T1();
+//    cin >> choice1;
+//    try
+//    {
+//        while (1)
+//        {
+//            if (choice1 == 1)
+//            {
+//                
+//                cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ‡Ð¸ÑÐ»Ð¾ Ñ‚Ð¸Ð¿Ð° " << typeid(T1).name() << endl;
+//                cin >> num;
+//                break;
+//            }
+//            else if (choice1 == 2)
+//            {
+//                num = doublerand(-randmax, randmax);
+//                break;
+//
+//            }
+//            else
+//            {
+//                cout << "ÐÐµÐ²Ñ€Ð½Ñ‹Ð¹ Ð²Ð²Ð¾Ð´.\n";
+//                cin.clear();
+//                while (cin.get() != '\n');
+//            }
+//        }
+//        mat->MatrixMult(num);
+//    }
+//    catch (string ex)
+//    {
+//        throw ex;
+//    }
+//}
+
 //void FindNorm(void* mat1)
 //{
 //    int width = 9;
 //    int choice1 = 0;
-//    cout << "Âûáåðèòå òèï íîðìû:\n1. Êîðåíü èç ñóììû êâàäðàòîâ ýëåìåíòîâ ìàòðèöû.\n2. Ìàêñèìàëüíàÿ èç ñóì ìîäóëåé ýëåìåíòîâ ñòðîê ìàòðèöû.\n3. Ìàêñèìàëüíàÿ èç ñóì ìîäóëåé ýëåìåíòîâ ñòîëáöîâ ìàòðèöû.\n";
+//    cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ñ‚Ð¸Ð¿ Ð½Ð¾Ñ€Ð¼Ñ‹:\n1. ÐšÐ¾Ñ€ÐµÐ½ÑŒ Ð¸Ð· ÑÑƒÐ¼Ð¼Ñ‹ ÐºÐ²Ð°Ð´Ñ€Ð°Ñ‚Ð¾Ð² ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñ‹.\n2. ÐœÐ°ÐºÑÐ¸Ð¼Ð°Ð»ÑŒÐ½Ð°Ñ Ð¸Ð· ÑÑƒÐ¼ Ð¼Ð¾Ð´ÑƒÐ»ÐµÐ¹ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² ÑÑ‚Ñ€Ð¾Ðº Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñ‹.\n3. ÐœÐ°ÐºÑÐ¸Ð¼Ð°Ð»ÑŒÐ½Ð°Ñ Ð¸Ð· ÑÑƒÐ¼ Ð¼Ð¾Ð´ÑƒÐ»ÐµÐ¹ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² ÑÑ‚Ð¾Ð»Ð±Ñ†Ð¾Ð² Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñ‹.\n";
 //    string typeofdata = ((Matrix<ListSequence<int>, int>*)mat1)->GetTypeOfData();
 //    try
 //    {
@@ -2166,7 +2212,7 @@ void MatrixMult(void* mat1)
 //
 //                    }
 //                    complex* norm = new complex(Re, Im);
-//                    cout << "Íîðìà: sqrt(" << *norm << ")\n";
+//                    cout << "ÐÐ¾Ñ€Ð¼Ð°: sqrt(" << *norm << ")\n";
 //                }
 //                break;
 //            }
@@ -2194,7 +2240,7 @@ void MatrixMult(void* mat1)
 //                            if (norm1 < norm) norm1 = norm;
 //                        }
 //                    }
-//                    cout << "Íîðìà: " << setw(width) << norm1 << endl;
+//                    cout << "ÐÐ¾Ñ€Ð¼Ð°: " << setw(width) << norm1 << endl;
 //                }
 //                else if (typeofdata == "long int")
 //                {
@@ -2218,7 +2264,7 @@ void MatrixMult(void* mat1)
 //                            if (norm1 < norm) norm1 = norm;
 //                        }
 //                    }
-//                    cout << "Íîðìà: " << setw(width) << norm1 << endl;
+//                    cout << "ÐÐ¾Ñ€Ð¼Ð°: " << setw(width) << norm1 << endl;
 //                }
 //                else if (typeofdata == "float")
 //                {
@@ -2242,7 +2288,7 @@ void MatrixMult(void* mat1)
 //                            if (norm1 < norm) norm1 = norm;
 //                        }
 //                    }
-//                    cout << "Íîðìà: " << setw(width) << norm1 << endl;
+//                    cout << "ÐÐ¾Ñ€Ð¼Ð°: " << setw(width) << norm1 << endl;
 //                }
 //                else if (typeofdata == "double")
 //                {
@@ -2266,7 +2312,7 @@ void MatrixMult(void* mat1)
 //                            if (norm1 < norm) norm1 = norm;
 //                        }
 //                    }
-//                    cout << "Íîðìà: " << setw(width) << norm1 << endl;
+//                    cout << "ÐÐ¾Ñ€Ð¼Ð°: " << setw(width) << norm1 << endl;
 //                }
 //                else if (typeofdata == "complex")
 //                {
@@ -2290,7 +2336,7 @@ void MatrixMult(void* mat1)
 //                        }
 //
 //                    }
-//                    cout << "Íîðìà: " << setw(width) << norm1 << "\n";
+//                    cout << "ÐÐ¾Ñ€Ð¼Ð°: " << setw(width) << norm1 << "\n";
 //                }
 //                break;
 //            }
@@ -2318,7 +2364,7 @@ void MatrixMult(void* mat1)
 //                            if (norm1 < norm) norm1 = norm;
 //                        }
 //                    }
-//                    cout << "Íîðìà: " << setw(width) << norm1 << endl;
+//                    cout << "ÐÐ¾Ñ€Ð¼Ð°: " << setw(width) << norm1 << endl;
 //                }
 //                else if (typeofdata == "long int")
 //                {
@@ -2342,7 +2388,7 @@ void MatrixMult(void* mat1)
 //                            if (norm1 < norm) norm1 = norm;
 //                        }
 //                    }
-//                    cout << "Íîðìà: " << setw(width) << norm1 << endl;
+//                    cout << "ÐÐ¾Ñ€Ð¼Ð°: " << setw(width) << norm1 << endl;
 //                }
 //                else if (typeofdata == "float")
 //                {
@@ -2366,7 +2412,7 @@ void MatrixMult(void* mat1)
 //                            if (norm1 < norm) norm1 = norm;
 //                        }
 //                    }
-//                    cout << "Íîðìà: " << setw(width) << norm1 << endl;
+//                    cout << "ÐÐ¾Ñ€Ð¼Ð°: " << setw(width) << norm1 << endl;
 //                }
 //                else if (typeofdata == "double")
 //                {
@@ -2390,7 +2436,7 @@ void MatrixMult(void* mat1)
 //                            if (norm1 < norm) norm1 = norm;
 //                        }
 //                    }
-//                    cout << "Íîðìà: " << setw(width) << norm1 << endl;
+//                    cout << "ÐÐ¾Ñ€Ð¼Ð°: " << setw(width) << norm1 << endl;
 //                }
 //                else if (typeofdata == "complex")
 //                {
@@ -2414,13 +2460,13 @@ void MatrixMult(void* mat1)
 //                        }
 //
 //                    }
-//                    cout << "Íîðìà: " << setw(width) << norm1 << "\n";
+//                    cout << "ÐÐ¾Ñ€Ð¼Ð°: " << setw(width) << norm1 << "\n";
 //                }
 //                break;
 //            }
 //            else
 //            {
-//                cout << "Íåâåðíûé ââîä\n";
+//                cout << "ÐÐµÐ²ÐµÑ€Ð½Ñ‹Ð¹ Ð²Ð²Ð¾Ð´\n";
 //                cin.clear();
 //                while (cin.get() != '\n');
 //            }
@@ -2437,7 +2483,7 @@ void FindNorm(Matrix<T, T1>* mat)
 {
     int width = 9;
     int choice1 = 0;
-    cout << "Âûáåðèòå òèï íîðìû:\n1. Êîðåíü èç ñóììû êâàäðàòîâ ýëåìåíòîâ ìàòðèöû.\n2. Ìàêñèìàëüíàÿ èç ñóì ìîäóëåé ýëåìåíòîâ ñòðîê ìàòðèöû.\n3. Ìàêñèìàëüíàÿ èç ñóì ìîäóëåé ýëåìåíòîâ ñòîëáöîâ ìàòðèöû.\n";
+    cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ñ‚Ð¸Ð¿ Ð½Ð¾Ñ€Ð¼Ñ‹:\n1. ÐšÐ¾Ñ€ÐµÐ½ÑŒ Ð¸Ð· ÑÑƒÐ¼Ð¼Ñ‹ ÐºÐ²Ð°Ð´Ñ€Ð°Ñ‚Ð¾Ð² ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñ‹.\n2. ÐœÐ°ÐºÑÐ¸Ð¼Ð°Ð»ÑŒÐ½Ð°Ñ Ð¸Ð· ÑÑƒÐ¼ Ð¼Ð¾Ð´ÑƒÐ»ÐµÐ¹ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² ÑÑ‚Ñ€Ð¾Ðº Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñ‹.\n3. ÐœÐ°ÐºÑÐ¸Ð¼Ð°Ð»ÑŒÐ½Ð°Ñ Ð¸Ð· ÑÑƒÐ¼ Ð¼Ð¾Ð´ÑƒÐ»ÐµÐ¹ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² ÑÑ‚Ð¾Ð»Ð±Ñ†Ð¾Ð² Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñ‹.\n";
     try
     {
         while (1)
@@ -2460,7 +2506,7 @@ void FindNorm(Matrix<T, T1>* mat)
             }
             else
             {
-                cout << "Íåâåðíûé ââîä\n";
+                cout << "ÐÐµÐ²ÐµÑ€Ð½Ñ‹Ð¹ Ð²Ð²Ð¾Ð´\n";
                 cin.clear();
                 while (cin.get() != '\n');
             }
@@ -2476,7 +2522,7 @@ template<typename T, typename T1>
 void transformations_rows(void* mat1)
 {
     Matrix<T, T1>* mat = ((Matrix<T, T1>*)mat1);
-    cout << "Âûáåðèòå ïðåîáðàçîâàíèå:\n1. Ïåðåñòàíîâêà ìåñòàìè äâóõ ñòðîê.\n2. Óìíîæåíèå íà íåíóëåâóþ êîíñòàíòó ñòðîêè.\n3. Ïðèáàâëåíèå ê ëþáîé ñòðîêå ìàòðèöû äðóãîé ñòðîêè, óìíîæåííîé íà íåíóëåâîå ÷èñëî.\n";
+    cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ð¿Ñ€ÐµÐ¾Ð±Ñ€Ð°Ð·Ð¾Ð²Ð°Ð½Ð¸Ðµ:\n1. ÐŸÐµÑ€ÐµÑÑ‚Ð°Ð½Ð¾Ð²ÐºÐ° Ð¼ÐµÑÑ‚Ð°Ð¼Ð¸ Ð´Ð²ÑƒÑ… ÑÑ‚Ñ€Ð¾Ðº.\n2. Ð£Ð¼Ð½Ð¾Ð¶ÐµÐ½Ð¸Ðµ Ð½Ð° Ð½ÐµÐ½ÑƒÐ»ÐµÐ²ÑƒÑŽ ÐºÐ¾Ð½ÑÑ‚Ð°Ð½Ñ‚Ñƒ ÑÑ‚Ñ€Ð¾ÐºÐ¸.\n3. ÐŸÑ€Ð¸Ð±Ð°Ð²Ð»ÐµÐ½Ð¸Ðµ Ðº Ð»ÑŽÐ±Ð¾Ð¹ ÑÑ‚Ñ€Ð¾ÐºÐµ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñ‹ Ð´Ñ€ÑƒÐ³Ð¾Ð¹ ÑÑ‚Ñ€Ð¾ÐºÐ¸, ÑƒÐ¼Ð½Ð¾Ð¶ÐµÐ½Ð½Ð¾Ð¹ Ð½Ð° Ð½ÐµÐ½ÑƒÐ»ÐµÐ²Ð¾Ðµ Ñ‡Ð¸ÑÐ»Ð¾.\n";
     int choice1 = 0;
     try
     {
@@ -2488,13 +2534,13 @@ void transformations_rows(void* mat1)
                 while (1)
                 {
                     int row1 = -1, row2 = -1;
-                    cout << "Âûáåðèòå ïåðâóþ ñòðîêó äëÿ ïåðåñòàíîâêè: ";
+                    cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ð¿ÐµÑ€Ð²ÑƒÑŽ ÑÑ‚Ñ€Ð¾ÐºÑƒ Ð´Ð»Ñ Ð¿ÐµÑ€ÐµÑÑ‚Ð°Ð½Ð¾Ð²ÐºÐ¸: ";
                     cin >> row1;
-                    cout << "Âûáåðèòå âòîðóþ ñòðîêó äëÿ ïåðåñòàíîâêè: ";
+                    cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ð²Ñ‚Ð¾Ñ€ÑƒÑŽ ÑÑ‚Ñ€Ð¾ÐºÑƒ Ð´Ð»Ñ Ð¿ÐµÑ€ÐµÑÑ‚Ð°Ð½Ð¾Ð²ÐºÐ¸: ";
                     cin >> row2;
                     if (row1 < 0 || row1 >= mat->GetNumOfRows() || row2 < 0 || row2 >= mat->GetNumOfRows())
                     {
-                        cout << "Íåâðíûé ââîä\n";
+                        cout << "ÐÐµÐ²Ñ€Ð½Ñ‹Ð¹ Ð²Ð²Ð¾Ð´\n";
                         cin.clear();
                         while (cin.get() != '\n');
                     }
@@ -2512,13 +2558,13 @@ void transformations_rows(void* mat1)
                 {
                     T1 num = T1();
                     int row = -1;
-                    cout << "Ââåäèòå íåíóëåâóþ êîíñòàíòó: ";
+                    cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð½ÐµÐ½ÑƒÐ»ÐµÐ²ÑƒÑŽ ÐºÐ¾Ð½ÑÑ‚Ð°Ð½Ñ‚Ñƒ: ";
                     cin >> num;
-                    cout << "Âûáåðèòå ñòðîêó äëÿ óìíîæåíèÿ: ";
+                    cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ ÑÑ‚Ñ€Ð¾ÐºÑƒ Ð´Ð»Ñ ÑƒÐ¼Ð½Ð¾Ð¶ÐµÐ½Ð¸Ñ: ";
                     cin >> row;
                     if (num == T1() || row < 0 || row >= mat->GetNumOfRows())
                     {
-                        cout << "Íåâåðíûé ââîä\n";
+                        cout << "ÐÐµÐ²ÐµÑ€Ð½Ñ‹Ð¹ Ð²Ð²Ð¾Ð´\n";
                         cin.clear();
                         while (cin.get() != '\n');
                     }
@@ -2535,15 +2581,15 @@ void transformations_rows(void* mat1)
                 {
                     T1 num = T1();
                     int row1 = -1, row2 = -1;
-                    cout << "Ââåäèòå íåíóëåâóþ êîñòàíòó: ";
+                    cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð½ÐµÐ½ÑƒÐ»ÐµÐ²ÑƒÑŽ ÐºÐ¾ÑÑ‚Ð°Ð½Ñ‚Ñƒ: ";
                     cin >> num;
-                    cout << "Âûáåðèòå ñòðîêó äëÿ óìíîæåíèÿ: ";
+                    cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ ÑÑ‚Ñ€Ð¾ÐºÑƒ Ð´Ð»Ñ ÑƒÐ¼Ð½Ð¾Ð¶ÐµÐ½Ð¸Ñ: ";
                     cin >> row1;
-                    cout << "Âûáåðèòå ñòðîêó äëÿ ñëîæåíèÿ: ";
+                    cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ ÑÑ‚Ñ€Ð¾ÐºÑƒ Ð´Ð»Ñ ÑÐ»Ð¾Ð¶ÐµÐ½Ð¸Ñ: ";
                     cin >> row2;
                     if (num == T1() || row1 < 0 || row1 >= mat->GetNumOfRows() || row2 < 0 || row2 >= mat->GetNumOfRows())
                     {
-                        cout << "Íåâåðíûé ââîä\n";
+                        cout << "ÐÐµÐ²ÐµÑ€Ð½Ñ‹Ð¹ Ð²Ð²Ð¾Ð´\n";
                         cin.clear();
                         while (cin.get() != '\n');
                     }
@@ -2556,7 +2602,7 @@ void transformations_rows(void* mat1)
             }
             else
             {
-                cout << "Íåâåðíûé ââîä\n";
+                cout << "ÐÐµÐ²ÐµÑ€Ð½Ñ‹Ð¹ Ð²Ð²Ð¾Ð´\n";
                 cin.clear();
                 while (cin.get() != '\n');
             }
@@ -2572,7 +2618,7 @@ template<typename T, typename T1>
 void transformations_columns(void* mat1)
 {
     Matrix<T, T1>* mat = (Matrix<T, T1>*)mat1;
-    cout << "Âûáåðèòå ïðåîáðàçîâàíèå:\n1. Ïåðåñòàíîâêà ìåñòàìè äâóõ ñòîëáöîâ.\n2. Óìíîæåíèå íà íåíóëåâóþ êîíñòàíòó ñòîëáöà.\n3. Ïðèáàâëåíèå ê ëþáîìó ñòîëáöó ìàòðèöû äðóãîãî ñòîáöà, óìíîæåííîãî íà íåíóëåâîå ÷èñëî.\n";
+    cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ð¿Ñ€ÐµÐ¾Ð±Ñ€Ð°Ð·Ð¾Ð²Ð°Ð½Ð¸Ðµ:\n1. ÐŸÐµÑ€ÐµÑÑ‚Ð°Ð½Ð¾Ð²ÐºÐ° Ð¼ÐµÑÑ‚Ð°Ð¼Ð¸ Ð´Ð²ÑƒÑ… ÑÑ‚Ð¾Ð»Ð±Ñ†Ð¾Ð².\n2. Ð£Ð¼Ð½Ð¾Ð¶ÐµÐ½Ð¸Ðµ Ð½Ð° Ð½ÐµÐ½ÑƒÐ»ÐµÐ²ÑƒÑŽ ÐºÐ¾Ð½ÑÑ‚Ð°Ð½Ñ‚Ñƒ ÑÑ‚Ð¾Ð»Ð±Ñ†Ð°.\n3. ÐŸÑ€Ð¸Ð±Ð°Ð²Ð»ÐµÐ½Ð¸Ðµ Ðº Ð»ÑŽÐ±Ð¾Ð¼Ñƒ ÑÑ‚Ð¾Ð»Ð±Ñ†Ñƒ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñ‹ Ð´Ñ€ÑƒÐ³Ð¾Ð³Ð¾ ÑÑ‚Ð¾Ð±Ñ†Ð°, ÑƒÐ¼Ð½Ð¾Ð¶ÐµÐ½Ð½Ð¾Ð³Ð¾ Ð½Ð° Ð½ÐµÐ½ÑƒÐ»ÐµÐ²Ð¾Ðµ Ñ‡Ð¸ÑÐ»Ð¾.\n";
     int choice1 = 0;
     try
     {
@@ -2584,13 +2630,13 @@ void transformations_columns(void* mat1)
                 while (1)
                 {
                     int column1 = -1, column2 = -1;
-                    cout << "Âûáåðèòå ïåðâûé ñòîëáåö äëÿ ïåðåñòàíîâêè: ";
+                    cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ð¿ÐµÑ€Ð²Ñ‹Ð¹ ÑÑ‚Ð¾Ð»Ð±ÐµÑ† Ð´Ð»Ñ Ð¿ÐµÑ€ÐµÑÑ‚Ð°Ð½Ð¾Ð²ÐºÐ¸: ";
                     cin >> column1;
-                    cout << "Âûáåðèòå âòîðîé ñòîëáåö äëÿ ïåðåñòàíîâêè: ";
+                    cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ð²Ñ‚Ð¾Ñ€Ð¾Ð¹ ÑÑ‚Ð¾Ð»Ð±ÐµÑ† Ð´Ð»Ñ Ð¿ÐµÑ€ÐµÑÑ‚Ð°Ð½Ð¾Ð²ÐºÐ¸: ";
                     cin >> column2;
                     if (column1 < 0 || column1 >= mat->GetNumOfColumns() || column2 < 0 || column2 >= mat->GetNumOfColumns())
                     {
-                        cout << "Íåâðíûé ââîä\n";
+                        cout << "ÐÐµÐ²Ñ€Ð½Ñ‹Ð¹ Ð²Ð²Ð¾Ð´\n";
                         cin.clear();
                         while (cin.get() != '\n');
                     }
@@ -2608,13 +2654,13 @@ void transformations_columns(void* mat1)
                 {
                     T1 num = T1();
                     int column = -1;
-                    cout << "Ââåäèòå íåíóëåâóþ êîíñòàíòó: ";
+                    cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð½ÐµÐ½ÑƒÐ»ÐµÐ²ÑƒÑŽ ÐºÐ¾Ð½ÑÑ‚Ð°Ð½Ñ‚Ñƒ: ";
                     cin >> num;
-                    cout << "Âûáåðèòå ñòîëáåö äëÿ óìíîæåíèÿ: ";
+                    cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ ÑÑ‚Ð¾Ð»Ð±ÐµÑ† Ð´Ð»Ñ ÑƒÐ¼Ð½Ð¾Ð¶ÐµÐ½Ð¸Ñ: ";
                     cin >> column;
                     if (num == T1() || column < 0 || column >= mat->GetNumOfColumns())
                     {
-                        cout << "Íåâåðíûé ââîä\n";
+                        cout << "ÐÐµÐ²ÐµÑ€Ð½Ñ‹Ð¹ Ð²Ð²Ð¾Ð´\n";
                         cin.clear();
                         while (cin.get() != '\n');
                     }
@@ -2631,15 +2677,15 @@ void transformations_columns(void* mat1)
                 {
                     T1 num = T1();
                     int column1 = -1, column2 = -1;
-                    cout << "Ââåäèòå íåíóëåâóþ êîñòàíòó: ";
+                    cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð½ÐµÐ½ÑƒÐ»ÐµÐ²ÑƒÑŽ ÐºÐ¾ÑÑ‚Ð°Ð½Ñ‚Ñƒ: ";
                     cin >> num;
-                    cout << "Âûáåðèòå ñòîáåö äëÿ óìíîæåíèÿ: ";
+                    cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ ÑÑ‚Ð¾Ð±ÐµÑ† Ð´Ð»Ñ ÑƒÐ¼Ð½Ð¾Ð¶ÐµÐ½Ð¸Ñ: ";
                     cin >> column1;
-                    cout << "Âûáåðèòå ñòîáåö äëÿ ñëîæåíèÿ: ";
+                    cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ ÑÑ‚Ð¾Ð±ÐµÑ† Ð´Ð»Ñ ÑÐ»Ð¾Ð¶ÐµÐ½Ð¸Ñ: ";
                     cin >> column2;
                     if (num == T1() || column1 < 0 || column1 >= mat->GetNumOfColumns() || column2 < 0 || column2 >= mat->GetNumOfColumns())
                     {
-                        cout << "Íåâåðíûé ââîä\n";
+                        cout << "ÐÐµÐ²ÐµÑ€Ð½Ñ‹Ð¹ Ð²Ð²Ð¾Ð´\n";
                         cin.clear();
                         while (cin.get() != '\n');
                     }
@@ -2652,7 +2698,7 @@ void transformations_columns(void* mat1)
             }
             else
             {
-                cout << "Íåâåðíûé ââîä\n";
+                cout << "ÐÐµÐ²ÐµÑ€Ð½Ñ‹Ð¹ Ð²Ð²Ð¾Ð´\n";
                 cin.clear();
                 while (cin.get() != '\n');
             }
@@ -2674,18 +2720,18 @@ void Interface()
     while (choice1 != 5) {
     start:
         choice1 = choice2 = choice3 = 0;
-        cout << "Âûáåðèòå äåéñòâèå: \n1. Ñîçäàíèå ìàòðèöû\n2. Îïåðàöèè íàä ìàòðèöåé\n3. Óäàëåíèå ìàòðèöû\n4. Îòîáðàæåíèå ìàòðèöû\n5. Îêîí÷àíèå ïðîãðàììû\n";
+        cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ðµ: \n1. Ð¡Ð¾Ð·Ð´Ð°Ð½Ð¸Ðµ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñ‹\n2. ÐžÐ¿ÐµÑ€Ð°Ñ†Ð¸Ð¸ Ð½Ð°Ð´ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†ÐµÐ¹\n3. Ð£Ð´Ð°Ð»ÐµÐ½Ð¸Ðµ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñ‹\n4. ÐžÑ‚Ð¾Ð±Ñ€Ð°Ð¶ÐµÐ½Ð¸Ðµ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñ‹\n5. ÐžÐºÐ¾Ð½Ñ‡Ð°Ð½Ð¸Ðµ Ð¿Ñ€Ð¾Ð³Ñ€Ð°Ð¼Ð¼Ñ‹\n";
         cin >> choice1;
 
         if (choice1 == 1)
         {
             if (mat1 != nullptr)
             {
-                cout << "Ïðè ñîçäàíèè íîâîé ìàòðèöû áóäåò óäàëåíà ñòàðàÿ, ïðîäîëæèòü?\n1. Äà\n2. Íåò\n";
+                cout << "ÐŸÑ€Ð¸ ÑÐ¾Ð·Ð´Ð°Ð½Ð¸Ð¸ Ð½Ð¾Ð²Ð¾Ð¹ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñ‹ Ð±ÑƒÐ´ÐµÑ‚ ÑƒÐ´Ð°Ð»ÐµÐ½Ð° ÑÑ‚Ð°Ñ€Ð°Ñ, Ð¿Ñ€Ð¾Ð´Ð¾Ð»Ð¶Ð¸Ñ‚ÑŒ?\n1. Ð”Ð°\n2. ÐÐµÑ‚\n";
                 cin >> choice2;
                 if (choice2 == 2) goto start;
                 else if (choice2 != 1) {
-                    cout << "Íåâåðíûé ââîä\n";
+                    cout << "ÐÐµÐ²ÐµÑ€Ð½Ñ‹Ð¹ Ð²Ð²Ð¾Ð´\n";
                     cin.clear();
                     while (cin.get() != '\n');
                     goto start;
@@ -2698,11 +2744,11 @@ void Interface()
             }
             catch (string ex)
             {
-                cout << "Âî âðåìÿ ñîçäàíèÿ ìàòðèöû ïðîèçîøëà îøèáêà: " << ex << endl;
+                cout << "Ð’Ð¾ Ð²Ñ€ÐµÐ¼Ñ ÑÐ¾Ð·Ð´Ð°Ð½Ð¸Ñ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñ‹ Ð¿Ñ€Ð¾Ð¸Ð·Ð¾ÑˆÐ»Ð° Ð¾ÑˆÐ¸Ð±ÐºÐ°: " << ex << endl;
             }
             while (1)
             {
-                cout << "Âûáåðèòå ñïîñîá çàäàíèÿ ìàòðèöû:\n1. Ñëó÷àéíî.\n2. Âðó÷íóþ.\n";
+                cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ ÑÐ¿Ð¾ÑÐ¾Ð± Ð·Ð°Ð´Ð°Ð½Ð¸Ñ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñ‹:\n1. Ð¡Ð»ÑƒÑ‡Ð°Ð¹Ð½Ð¾.\n2. Ð’Ñ€ÑƒÑ‡Ð½ÑƒÑŽ.\n";
                 cin >> choice2;
                 if (choice2 == 1)
                 {
@@ -2711,7 +2757,7 @@ void Interface()
                     }
                     catch (string ex)
                     {
-                        cout << "Âî âðåìÿ çàïîëíåíèÿ ìàòðèöû ïñåâäîñëó÷àéíûìè ÷èñëàìè ïðîèçîøëà îøèáêà:" << ex << endl;
+                        cout << "Ð’Ð¾ Ð²Ñ€ÐµÐ¼Ñ Ð·Ð°Ð¿Ð¾Ð»Ð½ÐµÐ½Ð¸Ñ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñ‹ Ð¿ÑÐµÐ²Ð´Ð¾ÑÐ»ÑƒÑ‡Ð°Ð¹Ð½Ñ‹Ð¼Ð¸ Ñ‡Ð¸ÑÐ»Ð°Ð¼Ð¸ Ð¿Ñ€Ð¾Ð¸Ð·Ð¾ÑˆÐ»Ð° Ð¾ÑˆÐ¸Ð±ÐºÐ°:" << ex << endl;
                     }
                 }
                 else if (choice2 == 2)
@@ -2721,12 +2767,12 @@ void Interface()
                     }
                     catch (string ex)
                     {
-                        cout << "Âî âðåìÿ çàïîëíåíèÿ ìàòðèöû ÷èñëàìè èç êîíñîëè ïðîèçîøëà îøèáêà:" << ex << endl;
+                        cout << "Ð’Ð¾ Ð²Ñ€ÐµÐ¼Ñ Ð·Ð°Ð¿Ð¾Ð»Ð½ÐµÐ½Ð¸Ñ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñ‹ Ñ‡Ð¸ÑÐ»Ð°Ð¼Ð¸ Ð¸Ð· ÐºÐ¾Ð½ÑÐ¾Ð»Ð¸ Ð¿Ñ€Ð¾Ð¸Ð·Ð¾ÑˆÐ»Ð° Ð¾ÑˆÐ¸Ð±ÐºÐ°:" << ex << endl;
                     }
                 }
                 else
                 {
-                    cout << "Íåâåðíûé ââîä\n";
+                    cout << "ÐÐµÐ²ÐµÑ€Ð½Ñ‹Ð¹ Ð²Ð²Ð¾Ð´\n";
                     cin.clear();
                     while (cin.get() != '\n');
                 }
@@ -2738,10 +2784,10 @@ void Interface()
         {
             if (mat1 == nullptr)
             {
-                cout << "Ìàòðèöà íå îáíàðóæåíà\n";
+                cout << "ÐœÐ°Ñ‚Ñ€Ð¸Ñ†Ð° Ð½Ðµ Ð¾Ð±Ð½Ð°Ñ€ÑƒÐ¶ÐµÐ½Ð°\n";
                 goto start;
             }
-            cout << "Âûáåðèòå îïåðàöèþ:\n1. Ñëîæåíèå.\n2. Óìíîæåíèå íà ñêàëÿð.\n3. Âû÷èñëåíèå íîðìû.\n4. Ýëåìåíòàðíûå ïðåîáðàçîâàíèÿ ñòðîê.\n5. Ýëåìåíòàðíûå ïðåîáðàçîâàíèÿ ñòîëáöîâ.\n";
+            cout << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ð¾Ð¿ÐµÑ€Ð°Ñ†Ð¸ÑŽ:\n1. Ð¡Ð»Ð¾Ð¶ÐµÐ½Ð¸Ðµ.\n2. Ð£Ð¼Ð½Ð¾Ð¶ÐµÐ½Ð¸Ðµ Ð½Ð° ÑÐºÐ°Ð»ÑÑ€.\n3. Ð’Ñ‹Ñ‡Ð¸ÑÐ»ÐµÐ½Ð¸Ðµ Ð½Ð¾Ñ€Ð¼Ñ‹.\n4. Ð­Ð»ÐµÐ¼ÐµÐ½Ñ‚Ð°Ñ€Ð½Ñ‹Ðµ Ð¿Ñ€ÐµÐ¾Ð±Ñ€Ð°Ð·Ð¾Ð²Ð°Ð½Ð¸Ñ ÑÑ‚Ñ€Ð¾Ðº.\n5. Ð­Ð»ÐµÐ¼ÐµÐ½Ñ‚Ð°Ñ€Ð½Ñ‹Ðµ Ð¿Ñ€ÐµÐ¾Ð±Ñ€Ð°Ð·Ð¾Ð²Ð°Ð½Ð¸Ñ ÑÑ‚Ð¾Ð»Ð±Ñ†Ð¾Ð².\n";
             cin >> choice2;
             if (choice2 == 1)
             {
@@ -2750,17 +2796,33 @@ void Interface()
                 }
                 catch (string ex)
                 {
-                    cout << "Âî âðåìÿ ñëîæåíèÿ ìàòðèö ïðîèçîøëà îøèáêà:" << ex << endl;
+                    cout << "Ð’Ð¾ Ð²Ñ€ÐµÐ¼Ñ ÑÐ»Ð¾Ð¶ÐµÐ½Ð¸Ñ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ† Ð¿Ñ€Ð¾Ð¸Ð·Ð¾ÑˆÐ»Ð° Ð¾ÑˆÐ¸Ð±ÐºÐ°:" << ex << endl;
                 }
             }
             else if (choice2 == 2)
             {
                 try {
                     MatrixMult(mat1);
+                    /*if (((Matrix<ListSequence<int>, int>*)mat1)->GetTypeOfArray() == "DynamicArr")
+                    {
+                        if (((Matrix<ArraySequence<int>, int>*)mat1)->GetTypeOfData() == "int") MatrixMult<ArraySequence<int>, int>((Matrix<ArraySequence<int>, int>*)mat1);
+                        if (((Matrix<ArraySequence<float>, float>*)mat1)->GetTypeOfData() == "float") MatrixMult<ArraySequence<float>, float>((Matrix< ArraySequence<float>, float >*)mat1);
+                        if (((Matrix<ArraySequence<long>, long>*)mat1)->GetTypeOfData() == "long int") MatrixMult<ArraySequence<long>, long>((Matrix<ArraySequence<long>, long>*)mat1);
+                        if (((Matrix<ArraySequence<double>, double>*)mat1)->GetTypeOfData() == "double") MatrixMult<ArraySequence<double>, double>((Matrix<ArraySequence<double>, double>*)mat1);
+                        if (((Matrix<ArraySequence<complex>, complex>*)mat1)->GetTypeOfData() == "complex") MatrixMult<ArraySequence<complex>, complex>((Matrix<ArraySequence<complex>, complex>*)mat1);
+                    }
+                    if (((Matrix<ListSequence<int>, int>*)mat1)->GetTypeOfArray() == "LinkedArr")
+                    {
+                        if (((Matrix<ListSequence<int>, int>*)mat1)->GetTypeOfData() == "int") MatrixMult<ListSequence<int>, int>((Matrix<ListSequence<int>, int>*)mat1);
+                        if (((Matrix<ListSequence<float>, float>*)mat1)->GetTypeOfData() == "float") MatrixMult<ListSequence<float>, float>((Matrix<ListSequence<float>, float>*)mat1);
+                        if (((Matrix<ListSequence<long>, long>*)mat1)->GetTypeOfData() == "long int") MatrixMult<ListSequence<long>, long>((Matrix<ListSequence<long>, long>*)mat1);
+                        if (((Matrix<ListSequence<double>, double>*)mat1)->GetTypeOfData() == "double") MatrixMult<ListSequence<double>, double>((Matrix<ListSequence<double>, double>*)mat1);
+                        if (((Matrix<ListSequence<complex>, complex>*)mat1)->GetTypeOfData() == "complex") MatrixMult<ListSequence<complex>, complex>((Matrix<ListSequence<complex>, complex>*)mat1);
+                    }*/
                 }
                 catch (string ex)
                 {
-                    cout << "Âî âðåìÿ óìíîæåíèÿ ìàòðèöû íà ñêàëÿð ïðîèçîøëà îøèáêà:" << ex << endl;
+                    cout << "Ð’Ð¾ Ð²Ñ€ÐµÐ¼Ñ ÑƒÐ¼Ð½Ð¾Ð¶ÐµÐ½Ð¸Ñ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñ‹ Ð½Ð° ÑÐºÐ°Ð»ÑÑ€ Ð¿Ñ€Ð¾Ð¸Ð·Ð¾ÑˆÐ»Ð° Ð¾ÑˆÐ¸Ð±ÐºÐ°:" << ex << endl;
                 }
             }
             else if (choice2 == 3)
@@ -2786,7 +2848,7 @@ void Interface()
                 }
                 catch (string ex)
                 {
-                    cout << "Âî âðåìÿ ïîèñêà íîðìû ìàòðèöû ïðîèçîøëà îøèáêà:" << ex << endl;
+                    cout << "Ð’Ð¾ Ð²Ñ€ÐµÐ¼Ñ Ð¿Ð¾Ð¸ÑÐºÐ° Ð½Ð¾Ñ€Ð¼Ñ‹ Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñ‹ Ð¿Ñ€Ð¾Ð¸Ð·Ð¾ÑˆÐ»Ð° Ð¾ÑˆÐ¸Ð±ÐºÐ°:" << ex << endl;
                 }
             }
             else if (choice2 == 4)
@@ -2812,7 +2874,7 @@ void Interface()
                 }
                 catch (string ex)
                 {
-                    cout << "Âî âðåìÿ ýëåìåíòàðíûõ ïðåîáðàçîâàíèé ñòðîê ïðîèçîøëà îøèáêà: " << ex << endl;
+                    cout << "Ð’Ð¾ Ð²Ñ€ÐµÐ¼Ñ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð°Ñ€Ð½Ñ‹Ñ… Ð¿Ñ€ÐµÐ¾Ð±Ñ€Ð°Ð·Ð¾Ð²Ð°Ð½Ð¸Ð¹ ÑÑ‚Ñ€Ð¾Ðº Ð¿Ñ€Ð¾Ð¸Ð·Ð¾ÑˆÐ»Ð° Ð¾ÑˆÐ¸Ð±ÐºÐ°: " << ex << endl;
                 }
             }
             else if (choice2 == 5)
@@ -2838,12 +2900,12 @@ void Interface()
                 }
                 catch (string ex)
                 {
-                    cout<< "Âî âðåìÿ ýëåìåíòàðíûõ ïðåîáðàçîâàíèé ñòîëáöîâ ïðîèçîøëà îøèáêà : " << ex << endl;
+                    cout<< "Ð’Ð¾ Ð²Ñ€ÐµÐ¼Ñ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð°Ñ€Ð½Ñ‹Ñ… Ð¿Ñ€ÐµÐ¾Ð±Ñ€Ð°Ð·Ð¾Ð²Ð°Ð½Ð¸Ð¹ ÑÑ‚Ð¾Ð»Ð±Ñ†Ð¾Ð² Ð¿Ñ€Ð¾Ð¸Ð·Ð¾ÑˆÐ»Ð° Ð¾ÑˆÐ¸Ð±ÐºÐ° : " << ex << endl;
                 }
             }
             else
             {
-                cout << "Íåâåðíûé ââîä\n";
+                cout << "ÐÐµÐ²ÐµÑ€Ð½Ñ‹Ð¹ Ð²Ð²Ð¾Ð´\n";
                 cin.clear();
                 while (cin.get() != '\n');
             }
@@ -2853,13 +2915,13 @@ void Interface()
         {
             if (mat1 == nullptr)
             {
-                cout << "Ìàòðèöà íå îáíàðóæåíà\n";
+                cout << "ÐœÐ°Ñ‚Ñ€Ð¸Ñ†Ð° Ð½Ðµ Ð¾Ð±Ð½Ð°Ñ€ÑƒÐ¶ÐµÐ½Ð°\n";
             }
             else
             {
                 delete mat1;
                 mat1 = nullptr;
-                cout << "Ìàòðèöà óäàëåíà\n";
+                cout << "ÐœÐ°Ñ‚Ñ€Ð¸Ñ†Ð° ÑƒÐ´Ð°Ð»ÐµÐ½Ð°\n";
             }
         }
 
@@ -2867,7 +2929,7 @@ void Interface()
         {
             if (mat1 == nullptr)
             {
-                cout << "Ìàòðèöà íå îáíàðóæåíà\n";
+                cout << "ÐœÐ°Ñ‚Ñ€Ð¸Ñ†Ð° Ð½Ðµ Ð¾Ð±Ð½Ð°Ñ€ÑƒÐ¶ÐµÐ½Ð°\n";
 
             }
             else
@@ -2879,13 +2941,13 @@ void Interface()
                 }
                 catch (string ex)
                 {
-                    cout << "Âî âðåìÿ âûâîäà ìàòðèöû â êîíñîëü ïðîèçîøëà îøèáêà: " << ex << endl;
+                    cout << "Ð’Ð¾ Ð²Ñ€ÐµÐ¼Ñ Ð²Ñ‹Ð²Ð¾Ð´Ð° Ð¼Ð°Ñ‚Ñ€Ð¸Ñ†Ñ‹ Ð² ÐºÐ¾Ð½ÑÐ¾Ð»ÑŒ Ð¿Ñ€Ð¾Ð¸Ð·Ð¾ÑˆÐ»Ð° Ð¾ÑˆÐ¸Ð±ÐºÐ°: " << ex << endl;
                 }
             }
         }
         else if (choice1 != 5)
         {
-            cout << "Íåâåðíûé ââîä\n";
+            cout << "ÐÐµÐ²ÐµÑ€Ð½Ñ‹Ð¹ Ð²Ð²Ð¾Ð´\n";
             cin.clear();
             while (cin.get() != '\n');
         }
